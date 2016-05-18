@@ -20,6 +20,16 @@ sub vcl_recv {
         set req.http.Host = "HOST_HEADER";
         set req.http.X-VarnishPassThrough = "true";
     }
+    
+    if (req.url ~ "\/content.*$") {
+        set req.url = regsub(req.url, "content", "__cms-notifier/notify");
+    } elseif (req.url ~ "\/metadata.*$") {
+        set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
+    } elseif (req.url ~ "\/notification\/wordpress.*$") {
+        set req.url = regsub(req.url, "notification\/wordpress", "__wp-notifier/content");
+    } elseif (req.url ~ "\/notification\/brightcove.*$") {
+        set req.url = regsub(req.url, "notification\/brightcove", "__bc-notifier/content");
+    }
 
     if (!basicauth.match("/.htpasswd",  req.http.Authorization)) {
         return(synth(401, "Authentication required"));
