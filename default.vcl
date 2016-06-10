@@ -14,7 +14,7 @@ sub vcl_recv {
         return(synth(200, "robots"));
     }
 
-    if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$")) {
+    if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$") || (req.url ~ "^.*\/__kafka-rest-proxy.*$")) {
         return (pass);
     } elseif (!req.url ~ "^\/__[\w-]*\/.*$") {
         set req.http.Host = "HOST_HEADER";
