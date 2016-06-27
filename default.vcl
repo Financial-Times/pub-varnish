@@ -14,7 +14,8 @@ sub vcl_recv {
         return(synth(200, "robots"));
     }
 
-    if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$") || (req.url ~ "^.*\/__kafka-rest-proxy.*$")) {
+    if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$")) {
+        # skip auth and cache lookup
         return (pass);
     } elseif (!req.url ~ "^\/__[\w-]*\/.*$") {
         set req.http.Host = "HOST_HEADER";
@@ -35,6 +36,9 @@ sub vcl_recv {
         return(synth(401, "Authentication required"));
     }
     unset req.http.Authorization;
+
+    # skip cache lookup
+    return (pass)
 }
 
 sub vcl_synth {
