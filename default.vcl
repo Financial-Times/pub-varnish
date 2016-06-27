@@ -38,7 +38,7 @@ sub vcl_recv {
     unset req.http.Authorization;
 
     # skip cache lookup
-    return (pass)
+    return (pass);
 }
 
 sub vcl_synth {
