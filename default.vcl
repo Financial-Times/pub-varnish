@@ -22,9 +22,9 @@ sub vcl_recv {
         set req.http.X-VarnishPassThrough = "true";
     }
     
-    if (req.url ~ "\/content.*$") {
+    if (req.url ~ "^\/content.*$") {
         set req.url = regsub(req.url, "content", "__cms-notifier/notify");
-    } elseif (req.url ~ "\/metadata.*$") {
+    } elseif (req.url ~ "^\/metadata.*$") {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
         set req.url = regsub(req.url, "notification\/wordpress", "__wp-notifier/content");
