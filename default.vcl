@@ -28,10 +28,11 @@ sub vcl_recv {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
         set req.url = regsub(req.url, "notification\/wordpress", "__wp-notifier/content");
-    } elseif (req.url ~ "\/notification\/brightcove.*$") {
-        set req.url = regsub(req.url, "notification\/brightcove", "__bc-notifier/content");
+    } elseif (req.url ~ "\/notification\/brightcove\/content.*$") {
+        set req.url = regsub(req.url, "notification\/brightcove\/content", "__brightcove-notifier/notify");
+    } elseif (req.url ~ "\/notification\/brightcove\/metadata.*$") {
+        set req.url = regsub(req.url, "notification\/brightcove\/metadata", "__brightcove-raw-metadata-notifier/notify");
     }
-
     if (!basicauth.match("/.htpasswd",  req.http.Authorization)) {
         return(synth(401, "Authentication required"));
     }
