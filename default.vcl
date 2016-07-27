@@ -31,7 +31,7 @@ sub vcl_recv {
     } elseif (req.url ~ "\/notification\/brightcove\/content.*$") {
         set req.url = regsub(req.url, "notification\/brightcove\/content", "__brightcove-notifier/notify");
     } elseif (req.url ~ "\/notification\/brightcove\/metadata.*$") {
-        set req.url = regsub(req.url, "notification\/brightcove\/metadata", "__brightcove-raw-metadata-notifier/notify");
+        set req.url = regsub(req.url, "notification\/brightcove\/metadata", "__brightcove-metadata-preprocessor/notify");
     }
     if (!basicauth.match("/.htpasswd",  req.http.Authorization)) {
         return(synth(401, "Authentication required"));
