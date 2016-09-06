@@ -27,7 +27,7 @@ sub vcl_recv {
     } elseif (req.url ~ "^\/metadata.*$") {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
-        set req.url = regsub(req.url, "notification\/wordpress", "__wp-notifier/content");
+        set req.url = regsub(req.url, "notification\/wordpress", "__wordpress-notifier/content");
     } elseif (req.url ~ "\/notification\/brightcove\/content.*$") {
         set req.url = regsub(req.url, "notification\/brightcove\/content", "__brightcove-notifier/notify");
         return (pass);
