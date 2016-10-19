@@ -7,6 +7,7 @@ import basicauth;
 backend default {
     .host = "VARNISH_BACKEND_HOST";
     .port = "VARNISH_BACKEND_PORT";
+    .first_byte_timeout = 300s;
 }
 
 sub vcl_recv {
