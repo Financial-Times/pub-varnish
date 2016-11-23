@@ -9,7 +9,20 @@ backend default {
     .port = "VARNISH_BACKEND_PORT";
 }
 
+acl purge {
+    "localhost";
+}
+
 sub vcl_recv {
+
+    # allow PURGE from localhost
+    if (req.method == "PURGE") {
+        if (!client.ip ~ purge) {
+            return(synth(405,"Not allowed."));
+        }
+        return (purge);
+    }
+
     if (req.url ~ "^\/robots\.txt$") {
         return(synth(200, "robots"));
     }
@@ -21,7 +34,7 @@ sub vcl_recv {
         set req.http.Host = "HOST_HEADER";
         set req.http.X-VarnishPassThrough = "true";
     }
-    
+
     if (req.url ~ "^\/content.*$") {
         set req.url = regsub(req.url, "content", "__cms-notifier/notify");
     } elseif (req.url ~ "^\/metadata.*$") {
@@ -66,7 +79,7 @@ sub vcl_backend_response {
         if (bereq.retries < 2 ) {
             return(retry);
         }
-    } 
+    }
 }
 
 sub vcl_deliver {
