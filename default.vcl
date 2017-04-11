@@ -37,6 +37,8 @@ sub vcl_recv {
 
     if (req.url ~ "^\/content.*$") {
         set req.url = regsub(req.url, "content", "__cms-notifier/notify");
+    } elseif (req.url ~ "^\/video.*$") {
+        set req.url = regsub(req.url, "video", "__cms-notifier/notify");
     } elseif (req.url ~ "^\/metadata.*$") {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
