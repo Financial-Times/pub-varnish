@@ -29,6 +29,8 @@ sub vcl_recv {
 
     set req.http.X-Varnish-Original-Request-URL = req.url;
     set req.http.X-Varnish-X-Forwarded-For = req.http.X-Forwarded-For
+    set req.http.X-Varnish-Host = req.http.Host
+    set req.http.X-Varnish-X-Forwarded-Host = req.http.X-Forwarded-Host
     
     if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$")) {
         # skip auth and cache lookup
