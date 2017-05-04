@@ -27,7 +27,7 @@ sub vcl_recv {
         return(synth(200, "robots"));
     }
 
-    set req.http.X-Varnish-Original-Request-URL = req.url
+    set req.http.X-Varnish-Original-Request-URL = req.url;
     
     if ((req.url ~ "^.*\/__health.*$") || (req.url ~ "^.*\/__gtg.*$")) {
         # skip auth and cache lookup
