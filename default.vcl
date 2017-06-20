@@ -39,8 +39,8 @@ sub vcl_recv {
         set req.http.X-VarnishPassThrough = "true";
     }
 
-    if (req.url ~ "^\/__smartlogic-notifier/notify?apiKey=SL_API_KEY.*$") {
-        return(pass)
+    if (req.url ~ "^\/__smartlogic-notifier\/notify.*apiKey=SL_API_KEY.*$") {
+        return(pass);
     }
 
     if (req.url ~ "^\/content.*$") {
