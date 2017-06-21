@@ -39,10 +39,16 @@ sub vcl_recv {
         set req.http.X-VarnishPassThrough = "true";
     }
 
+    if (req.url ~ "^\/__smartlogic-notifier\/notify.*apiKey=SL_API_KEY.*$") {
+        return(pass);
+    }
+
     if (req.url ~ "^\/content.*$") {
         set req.url = regsub(req.url, "content", "__cms-notifier/notify");
     } elseif (req.url ~ "^\/video.*$") {
         set req.url = regsub(req.url, "video", "__cms-notifier/notify");
+    } elseif (req.url ~ "^\/smartlogic.*$") {
+        set req.url = regsub(req.url, "smartlogic", "__smartlogic-notifier/notify");
     } elseif (req.url ~ "^\/metadata.*$") {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {

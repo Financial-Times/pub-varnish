@@ -15,7 +15,7 @@ shutdown() {
 trap 'shutdown' HUP INT QUIT KILL TERM
 
 # Convert environment variables in the conf to fixed entries
-for name in VARNISH_BACKEND_PORT VARNISH_BACKEND_HOST HOST_HEADER NOTIFICATIONS_PUSH_PORT
+for name in VARNISH_BACKEND_PORT VARNISH_BACKEND_HOST HOST_HEADER NOTIFICATIONS_PUSH_PORT SL_API_KEY
 do
     eval value=\$$name
     sed -i "s/$name/${value}/g" /etc/varnish/default.vcl
