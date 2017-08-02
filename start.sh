@@ -23,7 +23,7 @@ done
 
 # Start varnish and log
 echo "Starting"
-varnishd -f /etc/varnish/default.vcl -s malloc,1024m -t 5 -p default_grace=3600 &
+varnishd -pvcc_allow_inline_c=true -f /etc/varnish/default.vcl -s malloc,1024m -t 5 -p default_grace=3600 &
 sleep 4
 
 varnishncsa -F '%h %{%d/%b/%Y:%T}t %U%q %s %D' &
