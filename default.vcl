@@ -58,10 +58,6 @@ sub vcl_recv {
         set req.http.X-VarnishPassThrough = "true";
     }
 
-    if (req.url ~ "^\/__smartlogic-notifier\/notify.*apiKey=SL_API_KEY.*$") {
-        return(pass);
-    }
-
     if (req.url ~ "^\/content.*$") {
         set req.url = regsub(req.url, "content", "__cms-notifier/notify");
     } elseif (req.url ~ "^\/video.*$") {
@@ -73,6 +69,11 @@ sub vcl_recv {
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
         set req.url = regsub(req.url, "notification\/wordpress", "__wordpress-notifier/content");
     }
+
+    if ("SL_API_KEY" != "" && req.url ~ "^\/__smartlogic-notifier\/notify.*apiKey=SL_API_KEY.*$") {
+        return(pass);
+    }
+
     if (!basicauth.match("/.htpasswd",  req.http.Authorization)) {
         return(synth(401, "Authentication required"));
     }
