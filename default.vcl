@@ -68,6 +68,8 @@ sub vcl_recv {
         set req.url = regsub(req.url, "metadata", "__cms-metadata-notifier/notify");
     } elseif (req.url ~ "\/notification\/wordpress.*$") {
         set req.url = regsub(req.url, "notification\/wordpress", "__wordpress-notifier/content");
+    } elseif (req.url ~ "^\/schemas.*$") {
+        set req.url = regsub(req.url, "schemas", "__json-schema-reader/schemas");
     }
 
     if ("SL_API_KEY" != "" && req.url ~ "^\/__smartlogic-notifier\/notify.*apiKey=SL_API_KEY.*$") {
